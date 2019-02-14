@@ -1,0 +1,6 @@
+.idea/
+iconfinder.iml
+icon-finder.jar
+logs/
+*.txt
+target/
