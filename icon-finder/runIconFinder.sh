@@ -1,17 +1,19 @@
 #!/bin/bash
+input_file_name=$1
+input_file_path=$(readlink -f $input_file_name 2> /dev/null)
+
 DIR=$(dirname "$(readlink -f "$0")") # Directory of the script -- allows the script to invoked from anywhere
 cd $DIR
 
-input_file=$1
 ## If an input file is not provided, print an error and exit
-if [ -z $input_file ]; then
+if [ -z $input_file_name ]; then
     echo "Usage: $0 [input_file]"
     exit 1;
 fi
 
 ## If the input file does not exist, print an error and exit
-if [ ! -f $input_file ]; then
-    echo "$input_file not found"
+if [ ! -f $input_file_path ]; then
+    echo "$input_file_name not found"
     exit 1;
 fi
 
@@ -26,7 +28,7 @@ if [ ! -f $config_file ]; then
 fi
 
 ## Creates symbolic link to user specified input file so it can be found by the default configuration
-ln -sf $(readlink -f $input_file) src/main/resources/input.txt
+ln -sf $(readlink -f $input_file_path) src/main/resources/input.txt
 
 ## Generate the jar file and run the Icon Finder program
 mvn clean package
