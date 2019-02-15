@@ -14,7 +14,7 @@ if [ ! -f $input_file ]; then
     exit 1;
 fi
 
-ln -sf $input_file src/main/resources/input.txt
+ln -sf $(readlink -f $input_file) src/main/resources/input.txt
 
 ## Make sure the repo is up to date
 git pull
