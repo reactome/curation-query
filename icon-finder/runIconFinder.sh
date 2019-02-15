@@ -16,11 +16,12 @@ if [ ! -f $input_file ]; then
 fi
 
 ## Make sure the repo is up to date
+echo "Updating icon-finder repository from GitHub"
 git pull
 
 config_file=config.properties
 ## If the config file does not exist, run configuration script
-if [ -z $config_file ]; then
+if [ ! -f $config_file ]; then
     ./configureIconFinder.sh
 fi
 
