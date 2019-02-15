@@ -14,6 +14,7 @@ if [ ! -f $input_file ]; then
     exit 1;
 fi
 
+## Creates symbolic link to user specified input file so it can be found by the default configuration
 ln -sf $(readlink -f $input_file) src/main/resources/input.txt
 
 ## Make sure the repo is up to date
