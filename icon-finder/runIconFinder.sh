@@ -4,12 +4,12 @@ cd $DIR
 
 input_file=$1
 ## If an input file is not provided, print an error and exit
-if [-z $input_file]; then
+if [ -z $input_file ]; then
     echo "Usage: ./$0 [input_file]"
     exit 1;
 fi
 
-if [! -f $input_file]; then
+if [ ! -f $input_file ]; then
     echo "$input_file not found"
     exit 1;
 fi
