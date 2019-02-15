@@ -18,7 +18,13 @@ if [ -z $host ]; then
 fi
 
 config_file=config.properties
-cp -f src/main/resources/$config_file .
+original_config_file=src/main/resources/$config_file
+
+# Stop git tracking on original configruation file
+git update-index --assume-unchanged $original_config_file
+
+# Makes a copy of the sample configuration file
+cp -f $original_config_file .
 
 # Removes comments from the original configuration file
 sed -i '/^###/d' $config_file
