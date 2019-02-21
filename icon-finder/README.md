@@ -33,7 +33,7 @@ A auto-configuration script is provided at the root directory of this project an
 
 The configuration file produced by the script will be at the root directory of this project and named `config.properties`.  It can be viewed and edited directly if desired.
 
-A sample configuration file is provided at `src/main/resources/config.properties` and looks like this, but should **NEVER BE EDITED DIRECTLY** and is included in the .gitignore file.
+A sample configuration file is provided at `src/main/resources/config.properties` and looks like this, but should **NEVER BE EDITED DIRECTLY** and any changes are ignored by git after running the configuration script.
 
 ```
 user=mysql_user
