@@ -35,7 +35,5 @@ sed -i "s/\(pass=\).*/\1$pass/" $config_file
 sed -i "s/\(host=\).*/\1$host/" $config_file
 sed -i "s/\(db=\).*/\1$db/" $config_file
 
-# Reports the contents of the finished configuration file
-echo -e "\n"
-echo "Icon Finder configured to the following values:"
-cat $config_file
+# Change permissions to read/write for user only
+chmod 600 $config_file
