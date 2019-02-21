@@ -2,6 +2,7 @@
 input_file_name=$1
 input_file_path=$(readlink -f $input_file_name 2> /dev/null)
 
+CWD=$(pwd) # Current working directory -- from where the script is being called
 DIR=$(dirname "$(readlink -f "$0")") # Directory of the script -- allows the script to invoked from anywhere
 cd $DIR
 
@@ -33,4 +34,4 @@ ln -sf $(readlink -f $input_file_path) src/main/resources/input.txt
 ## Generate the jar file and run the Icon Finder program
 mvn clean package
 ln -sf target/icon-finder-1.0-SNAPSHOT-jar-with-dependencies.jar icon-finder.jar
-java -jar icon-finder.jar $config_file > entities_in_diagrams.txt
+java -jar icon-finder.jar $config_file > $CWD/entities_in_diagrams.txt
