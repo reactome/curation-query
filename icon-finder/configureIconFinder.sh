@@ -6,7 +6,18 @@ echo -n "Enter mysql user name: "
 read user
 
 echo -n "Enter mysql password: "
-read pass
+# Outputs asterisks instead of plain text
+# Taken from https://stackoverflow.com/a/4316755
+unset password;
+while IFS= read -r -s -n1 pass; do
+  if [[ -z $pass ]]; then
+     echo
+     break
+  else
+     echo -n '*'
+     password+=$pass
+  fi
+done
 
 echo -n "Enter mysql database name: "
 read db
@@ -31,7 +42,7 @@ sed -i '/^###/d' $config_file
 
 # Replaces the dummy database configuration values
 sed -i "s/\(user=\).*/\1$user/" $config_file
-sed -i "s/\(pass=\).*/\1$pass/" $config_file
+sed -i "s/\(pass=\).*/\1$password/" $config_file
 sed -i "s/\(host=\).*/\1$host/" $config_file
 sed -i "s/\(db=\).*/\1$db/" $config_file
 
