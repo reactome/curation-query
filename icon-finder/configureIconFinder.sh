@@ -28,6 +28,12 @@ if [ -z $host ]; then
     host='localhost'
 fi
 
+echo -n "Enter mysql port (leave blank for 3306): "
+read port
+if [ -z $port ]; then
+    port=3306
+fi
+
 config_file=config.properties
 original_config_file=src/main/resources/$config_file
 
@@ -45,6 +51,7 @@ sed -i "s/\(user=\).*/\1$user/" $config_file
 sed -i "s/\(pass=\).*/\1$password/" $config_file
 sed -i "s/\(host=\).*/\1$host/" $config_file
 sed -i "s/\(db=\).*/\1$db/" $config_file
+sed -i "s/\(port=\).*/\1$port/" $config_file
 
 # Change permissions to read/write for user only
 chmod 600 $config_file
