@@ -7,24 +7,101 @@
 	<groupId>org.reactome.diagrams</groupId>
 	<artifactId>icon-finder</artifactId>
 	<version>1.0-SNAPSHOT</version>
-
 	<packaging>jar</packaging>
-	<name>icon-finder</name>
+
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>
+		Script to find the pathways in which user provided entity db ids have their own pathway diagram glpyhs
+	</description>
+	<url>https://github.com/reactome/curation-query/tree/develop/icon-finder</url>
+
+	<organization>
+		<name>Reactome</name>
+		<url>https://reactome.org</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name></name>
+			<url></url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>jweiser</id>
+			<name>Joel Weiser</name>
+			<email>joel.weiser@oicr.on.ca</email>
+			<organization>Ontario Institute for Cancer Research</organization>
+			<organizationUrl>https://oicr.on.ca</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/reactome/curation-query.git</connection>
+		<developerConnection>scm:git:ssh://github.com:reactome/curation-query.git</developerConnection>
+		<url>https://github.com/reactome/curation-query/tree/develop/icon-finder</url>
+	</scm>
+
+	<properties>
+		<!-- dependencies -->
+		<junit.version>4.12</junit.version>
+		<log4j.core.version>2.11.0</log4j.core.version>
+		<reactome.core.version>1.1.2</reactome.core.version>
+
+		<!-- build -->
+		<jdk.version>1.8</jdk.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<!-- maven build and plugins -->
+		<maven.assembly.version>2.6</maven.assembly.version>
+		<maven.compiler.version>3.7.0</maven.compiler.version>
+		<maven.gpg.version>1.5</maven.gpg.version>
+		<maven.javadoc.version>2.10.3</maven.javadoc.version>
+		<maven.release.version>2.5.3</maven.release.version>
+		<maven.source.version>2.4</maven.source.version>
+		<nexus-staging-maven-plugin>1.6.7</nexus-staging-maven-plugin>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.reactome.server</groupId>
+			<artifactId>reactome-core</artifactId>
+			<version>${reactome.core.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j.core.version}</version>
+		</dependency>
+	</dependencies>
 
 	<build>
+		<finalName>${project.artifactId}</finalName>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.7.0</version>
+				<version>${maven.compiler.version}</version>
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
 				</configuration>
 			</plugin>
 
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
+				<version>${maven.assembly.version}</version>
 				<configuration>
 					<archive>
 						<manifest>
@@ -45,35 +122,86 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<!-- Nexus staging plugin for Sonatype deployment -->
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>${nexus-staging-maven-plugin}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+
+			<!-- Generate source jar file -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${maven.source.version}</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Generate JavaDoc jar file -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven.javadoc.version}</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Signs deployed jar, source jar, and JavaDoc jar with GPG -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>${maven.gpg.version}</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Allows "release" mvn goal to deploy a SNAPSHOT or version release to Sonatype -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>${maven.release.version}</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<useReleaseProfile>false</useReleaseProfile>
+					<releaseProfiles>release</releaseProfiles>
+					<goals>deploy</goals>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
-
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.reactome.server</groupId>
-			<artifactId>reactome-core</artifactId>
-			<version>1.1.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>2.11.0</version>
-		</dependency>
-	</dependencies>
 
 	<repositories>
 		<repository>
 			<id>nexus-ebi-repo</id>
 			<name>The EBI internal repository</name>
-			<url>http://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-repo/</url>
+			<url>https://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-repo/</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -86,7 +214,7 @@
 		<repository>
 			<id>nexus-ebi-snapshot-repo</id>
 			<name>The EBI internal snapshot repository</name>
-			<url>http://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-snapshots/</url>
+			<url>https://www.ebi.ac.uk/Tools/maven/repos/content/groups/ebi-snapshots/</url>
 			<releases>
 				<enabled>false</enabled>
 			</releases>
@@ -97,12 +225,28 @@
 
 		<repository>
 			<name>EBI</name>
-			<url>http://www.ebi.ac.uk/Tools/maven/repos/content/repositories/releases/</url>
+			<url>https://www.ebi.ac.uk/Tools/maven/repos/content/repositories/releases/</url>
 			<id>EBI</id>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
 		</repository>
-
 	</repositories>
+
+	<!-- Configures the distribution to nexus repository -->
+	<distributionManagement>
+		<!-- Sonatype Release repo -->
+		<repository>
+			<id>ossrh</id>
+			<name>Sonatype Release Repository</name>
+			<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
+
+		<!-- Sonatype SNAPSHOT repo -->
+		<snapshotRepository>
+			<id>ossrh</id>
+			<name>Sonatype Snapshot Repository</name>
+			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>
