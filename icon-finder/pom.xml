@@ -45,8 +45,8 @@
 
 	<properties>
 		<!-- dependencies -->
-		<junit.version>4.12</junit.version>
-		<log4j.core.version>2.11.0</log4j.core.version>
+		<junit.version>4.13.2</junit.version>
+		<log4j.core.version>2.17.0</log4j.core.version>
 		<reactome.core.version>1.1.2</reactome.core.version>
 
 		<!-- build -->
